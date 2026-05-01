@@ -26,9 +26,9 @@ public:
 
     int get_length() const override;
 
+private:
+    DynamicArray<T> *items;// FIXED: items перенесён из protected в private
 protected:
-    DynamicArray<T> *items;// потомкам не  нужно , адо переосмыслить
-
     // Operations
     void append_internal(const T& item) override;
     void prepend_internal(const T& item) override;

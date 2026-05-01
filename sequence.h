@@ -3,8 +3,8 @@
 
 #include "i_enumerable.h"
 #include <stdexcept>
-#include <ostream>//  надо в отдельном файле
 #include "option.h"
+#include "enumerator_wrapper.h"
 
 template <class T>
 class Sequence : public IEnumerable<T>{
@@ -98,22 +98,17 @@ Sequence<T>* Sequence<T>::remove_at(int index) {
 
 template<class T>
 Sequence<T>* Sequence<T>::concat(const Sequence<T> &list) {
-
     Sequence<T> *concat = this->create_empty_sequence();
 
-    auto it1 = this->get_enumerator();
+    EnumeratorWrapper<T> it1(this->get_enumerator());
 
-    while (it1->has_more_elements())
-        concat->append_internal(it1->next());
+    while (it1.has_more_elements())
+        concat->append_internal(it1.next());
 
-    delete it1;
+    EnumeratorWrapper<T> it2(list.get_enumerator());
 
-    auto it2 = list.get_enumerator();
-
-    while (it2->has_more_elements())
-        concat->append_internal(it2->next());
-
-    delete it2;
+    while (it2.has_more_elements())
+        concat->append_internal(it2.next());
 
     return concat;
 }
@@ -127,11 +122,12 @@ Sequence<T>* Sequence<T>::get_sub_sequence(int startIndex, int endIndex) {
 
     Sequence<T> *subSequence = this->create_empty_sequence();
 
-    auto it = this->get_enumerator();
+    EnumeratorWrapper<T> it(this->get_enumerator());
+
     int index = 0;
 
-    while (it->has_more_elements()) {
-        const T& value = it->next();
+    while (it.has_more_elements()) {
+        const T& value = it.next();
 
         if (index >= startIndex && index <= endIndex)
             subSequence->append_internal(value);
@@ -139,7 +135,6 @@ Sequence<T>* Sequence<T>::get_sub_sequence(int startIndex, int endIndex) {
         index++;
     }
 
-    delete it;
     return subSequence;
 }
 
@@ -147,11 +142,11 @@ template<class T>
 Sequence<T>* Sequence<T>::map(T (*func)(const T&)) {
     Sequence<T> *result = this->create_empty_sequence();
 
-    auto it = this->get_enumerator();
-    while (it->has_more_elements())
-        result->append_internal(func(it->next()));
+    EnumeratorWrapper<T> it(this->get_enumerator());
 
-    delete it;//обертка нумератора внутури которого есть указатель с верт фун, а с наружи обычный класс, в деструкторе удалять указатель
+    while (it.has_more_elements())
+        result->append_internal(func(it.next()));
+
     return result;
 }
 
@@ -175,12 +170,11 @@ template<class T>
 T Sequence<T>::reduce(T (*func)(const T&, const T&), const T& init_value) {
     T value = init_value;
 
-    auto it = this->get_enumerator();
+    EnumeratorWrapper<T> it(this->get_enumerator());
 
-    while (it->has_more_elements())
-        value = func(value, it->next());
+    while (it.has_more_elements())
+        value = func(value, it.next());
 
-    delete it;
     return value;
 }
 
@@ -190,27 +184,20 @@ const T& Sequence<T>::operator[](int index) const {
 }
 
 template<class T>
-bool Sequence<T>::operator==(const Sequence<T> &other) const { // нужен ли?
+bool Sequence<T>::operator==(const Sequence<T> &other) const {
     if (this->get_length() != other.get_length())
         return false;
 
-    if (this == &other) // проверка на то, указатель на одинаковые ли объекты
+    if (this == &other)
         return true;
 
-    auto it1 = this->get_enumerator();
-    auto it2 = other.get_enumerator();
+    EnumeratorWrapper<T> it1(this->get_enumerator());
+    EnumeratorWrapper<T> it2(other.get_enumerator());
 
-    while (it1->has_more_elements() && it2->has_more_elements()) {
-        if (it1->next() != it2->next()) {
-            delete it1;
-            delete it2;
-
+    while (it1.has_more_elements() && it2.has_more_elements()) {
+        if (it1.next() != it2.next())
             return false;
-        }
     }
-
-    delete it1;
-    delete it2;
 
     return true;
 }
@@ -218,25 +205,6 @@ bool Sequence<T>::operator==(const Sequence<T> &other) const { // нужен л�
 template<class T>
 Sequence<T> *Sequence<T>::operator+(const Sequence<T> &other) const{
     return this->concat(other);
-}
-
-template<class T>
-std::ostream& operator<<(std::ostream &os, const Sequence<T> &seq) { // 1 параметр - ссылка куда мы пишем
-    auto it = seq.get_enumerator();
-
-    os << "[";
-
-    while (it->has_more_elements()) {
-        os << it->next();
-
-        if (it->has_more_elements())
-            os << ", ";
-    }
-
-    os << "]";
-
-    delete it;
-    return os;
 }
 
 // option's functions

@@ -37,8 +37,7 @@ public:
     const T& get(int index) const;
     Node* get_head() const;
 
-    LinkedList<T>* get_sub_list(int startIndex, int endIndex); // сл этап
-
+    LinkedList<T>* get_sub_list(int startIndex, int endIndex); // Создаёт новый список из части старого.
     int get_length() const;
 
     // Operations
@@ -47,7 +46,7 @@ public:
     void insert_at(const T& element, int index); // добавить в заданную позицию // сл этап
     void remove_at(int index);
 
-    LinkedList<T>* concat(LinkedList<T> *list);
+    LinkedList<T>* concat(LinkedList<T> *list);//Склеивает
 
     // итератор
     class ListEnumerator : public IEnumerator<T> {

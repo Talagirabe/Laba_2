@@ -4,6 +4,7 @@
 #include "immutableArraySequence.h"
 #include "mutableListSequence.h"
 #include "immutableListSequence.h"
+#include "all_stream.h"
 
 int ReadInt()
 {
