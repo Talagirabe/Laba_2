@@ -15,7 +15,7 @@ public:
     EnumeratorWrapper(IEnumerator<T>* enumerator) {
         this->enumerator = enumerator;
     }
-
+    //Конструктор получает указатель на энумератор
     ~EnumeratorWrapper() {
         delete enumerator;
     }

@@ -11,23 +11,6 @@ private:
     int size;
     int capacity;//над динамическим массиврм arr буффер который наследуется/инкапс и он умеет resize а array буффер инкап в аррей сиквенс
 
-public:
-    // constuctors - способы создания массива
-    DynamicArray(const T *items, int count);
-    DynamicArray(int size);
-    DynamicArray(const DynamicArray<T>& dynamicArray);
-
-    // destructor
-    ~DynamicArray();
-
-    // Decomposition
-    const T& get(int index) const;
-    int get_size() const;
-
-    // operations
-    void set(const T& value, int index);
-    void resize(int newSize);
-
     // итератор
     class ArrayEnumerator : public IEnumerator<T> {
     private:
@@ -50,6 +33,25 @@ public:
             return *current++; // разыменовали и сдвинулись
         }
     };
+public:
+    // constuctors - способы создания массива
+    DynamicArray(const T *items, int count);
+    DynamicArray(int size);
+    DynamicArray(const DynamicArray<T>& dynamicArray);
+
+    // destructor
+    ~DynamicArray();
+
+    // Decomposition
+    const T& get(int index) const;
+    int get_size() const;
+
+    // operations
+    void set(const T& value, int index);
+    void resize(int newSize);
+
+    //FIXED: iterator теперь private и мы не нарушаем инкапсуляцию
+    IEnumerator<T>* get_enumerator() const;
 };
 
 template<class T>
@@ -144,6 +146,11 @@ void DynamicArray<T>::resize(int newSize) {
     data = newData;
     capacity = newCapacity;
     size = newSize;
+}
+
+template<class T>
+IEnumerator<T>* DynamicArray<T>::get_enumerator() const {
+    return new ArrayEnumerator(this);
 }
 
 #endif //LABA2_DYNAMICARRAY_H

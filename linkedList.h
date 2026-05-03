@@ -265,7 +265,7 @@ void LinkedList<T>::remove_at(int index) {
     for (int i = 0; i < index - 1; i++) {
         prev = prev->next;
     }
-
+    //
     Node *to_delete = prev->next;
 
     prev->next = to_delete->next;

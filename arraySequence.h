@@ -62,9 +62,9 @@ ArraySequence<T>::~ArraySequence() {
 /*============ Итератор ============ */
 template<class T>
 IEnumerator<T>* ArraySequence<T>::get_enumerator() const {
-    return new typename DynamicArray<T>::ArrayEnumerator(this->items);
-}
-//паблик так себе
+    return this->items->get_enumerator();
+}//FIXED: ArrayEnumerator спрятан в private, чтобы не раскрывать внутреннюю
+// FIXED: реализацию DynamicArray. Наружу отдаётся только IEnumerator<T>* через get_enumerator().
 /*============ ГЕТТЕРЫ ============ */
 
 template<class T>
