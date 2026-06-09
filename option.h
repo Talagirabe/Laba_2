@@ -10,7 +10,7 @@ public:
     Option() : has_value_(false) {}
     Option(const T& val) : has_value_(true), value_(val) {}
 
-    bool has_more_elements() const { return has_value_; } // проверяет есть ли значение
+    bool has_more_elements() const { return has_value_; } 
     const T& get_value() const {
         if (!has_value_)
             throw std::runtime_error("Option value is required");
@@ -20,7 +20,7 @@ public:
 
 private:
     bool has_value_;
-    T value_; // не const , так как это хранилище
+    T value_; 
 };
 
 #endif //LABA2_OPTION_H
