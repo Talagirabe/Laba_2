@@ -46,7 +46,7 @@ public:
     T reduce(T(*func)(const T&, const T&), const T& init_value);
 
     // operators overload
-    const T& operator[](int index) const;//к элементам последовательности можно было обращаться по индексу
+    const T& operator[](int index) const;
     bool operator==(const Sequence<T> &other) const;
     Sequence<T>* operator+(const Sequence<T> &other) const;
 
@@ -211,9 +211,8 @@ Sequence<T> *Sequence<T>::operator+(const Sequence<T> &other) const{
 template<class T>
 Option<T> Sequence<T>::try_get_first() const{
     if (this->get_length() == 0)
-        return Option<T>(); // = false, те sequence пустой
-
-    return Option<T>(this->get_first()); // вернется Option, внутри которого has_value = true, value_ - найденный элемент
+        return Option<T>(); 
+    return Option<T>(this->get_first()); 
 }
 
 template<class T>
