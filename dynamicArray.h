@@ -19,22 +19,21 @@ private:
 
     public:
         ArrayEnumerator(const DynamicArray<T> *arr)
-            : current(arr->data), // указатель на первый элемент
-              end(arr->data + arr->get_size()) {} // указатель на конец
-
+            : current(arr->data), 
+              end(arr->data + arr->get_size()) {} 
         bool has_more_elements() override {
             return current != end;
         }
 
         const T& next() override {
             if (!has_more_elements())
-                throw std::out_of_range("ArrayEnumerator::next");//выброс исключения передаёт управление механизму обработки исключений.
+                throw std::out_of_range("ArrayEnumerator::next");
 
-            return *current++; // разыменовали и сдвинулись
+            return *current++; 
         }
     };
 public:
-    // constuctors - способы создания массива
+    // constuctors
     DynamicArray(const T *items, int count);
     DynamicArray(int size);
     DynamicArray(const DynamicArray<T>& dynamicArray);
@@ -107,7 +106,7 @@ template<class T>
 const T& DynamicArray<T>::get(int index) const{
     if (index < 0 || index >= size)
         throw std::out_of_range("Index out of range");
-    return data[index] ; // поместить в итератор
+    return data[index] ; 
 }
 
 template<class T>
