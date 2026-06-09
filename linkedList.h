@@ -9,8 +9,8 @@ class LinkedList {
 
 private:
     struct Node {
-        T data; // само значение для хранения объекта, поэтому не ссылка
-        Node *next;//указатель на следующий узел
+        T data; 
+        Node *next;
 
         Node(T value) {
             data = value;
@@ -37,16 +37,16 @@ public:
     const T& get(int index) const;
     Node* get_head() const;
 
-    LinkedList<T>* get_sub_list(int startIndex, int endIndex); // Создаёт новый список из части старого.
+    LinkedList<T>* get_sub_list(int startIndex, int endIndex); 
     int get_length() const;
 
     // Operations
-    void append(const T& element); // добавить в конец
-    void prepend(const T& element); // добавить в начало
-    void insert_at(const T& element, int index); // добавить в заданную позицию // сл этап
+    void append(const T& element); 
+    void prepend(const T& element); 
+    void insert_at(const T& element, int index); 
     void remove_at(int index);
 
-    LinkedList<T>* concat(LinkedList<T> *list);//Склеивает
+    LinkedList<T>* concat(LinkedList<T> *list);
 
     // итератор
     class ListEnumerator : public IEnumerator<T> {
