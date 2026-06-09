@@ -5,7 +5,7 @@
 #include "sequence.h"
 //FIXED: вынес в отдельный файл
 template<class T>
-std::ostream& operator<<(std::ostream &os, const Sequence<T> &seq) { // 1 параметр - ссылка куда мы пишем
+std::ostream& operator<<(std::ostream &os, const Sequence<T> &seq) {
     auto it = seq.get_enumerator();
 
     os << "[";
